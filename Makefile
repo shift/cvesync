@@ -1,9 +1,7 @@
 all: cvesync
 
 cvesync:
-	go get github.com/mattn/go-sqlite3
-	go get github.com/blackjack/syslog
-	go build -o cvesync github.com/mikkolehtisalo/cvesync/main
+	go build -o cvesync github.com/shift/cvesync/main
 
 install:
 	mkdir -p /opt/cvesync/bin /opt/cvesync/etc /opt/cvesync/var
