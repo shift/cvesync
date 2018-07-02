@@ -3,8 +3,8 @@ package nvd
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/blackjack/syslog"
-	"github.com/mikkolehtisalo/cvesync/util"
+	"github.com/rs/zerolog/log"
+	"github.com/shift/cvesync/util"
 	"strings"
 	"time"
 )
@@ -86,7 +86,7 @@ func Unmarshal_CVE(data []byte) CVE {
 	var c CVE
 	err := xml.Unmarshal(data, &c)
 	if err != nil {
-		syslog.Errf("Unable to parse feed: %v", err)
+		log.Error().Err(err).Msg("")
 		panic(err)
 	}
 

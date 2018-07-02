@@ -7,14 +7,14 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/blackjack/syslog"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"net/http"
 )
 
 func checkerr(err error) {
 	if err != nil {
-		syslog.Errf("Error: %v", err)
+		log.Error().Err(err)
 		panic(err)
 	}
 }
@@ -39,7 +39,7 @@ func Download_File(url string, cafile string) []byte {
 	// 500s and such
 	if resp.StatusCode != 200 {
 		errr := errors.New(fmt.Sprintf("File download failed with status code %v", resp.StatusCode))
-		syslog.Errf("%v", errr)
+		log.Error().Err(err)
 		panic(errr)
 	}
 

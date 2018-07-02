@@ -2,7 +2,7 @@ package nvd
 
 import (
 	"encoding/xml"
-	"github.com/blackjack/syslog"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
 )
 
@@ -19,7 +19,7 @@ func Unmarshal_CWE(data []byte) CWE {
 	var c CWE
 	err := xml.Unmarshal(data, &c)
 	if err != nil {
-		syslog.Errf("Unable to parse CWEs: %v", err)
+		log.Error().Err(err).Msg("")
 		panic(err)
 	}
 
@@ -29,7 +29,7 @@ func Unmarshal_CWE(data []byte) CWE {
 func Get_CWEs(filename string) CWE {
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
-		syslog.Errf("Unable to read CWE file: %v", err)
+		log.Error().Err(err).Msg("Unable to read CWE file")
 		panic(err)
 	}
 

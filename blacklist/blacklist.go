@@ -2,8 +2,8 @@ package blacklist
 
 import (
 	"bufio"
-	"github.com/blackjack/syslog"
-	"github.com/mikkolehtisalo/cvesync/nvd"
+	"github.com/rs/zerolog/log"
+	"github.com/shift/cvesync/nvd"
 	"os"
 	"strings"
 )
@@ -31,7 +31,7 @@ func Load_Blacklist(filename string) BlackList {
 
 	file, err := os.Open(filename)
 	if err != nil {
-		syslog.Errf("%v", err)
+		log.Error().Err(err).Msg("")
 		panic(err)
 	}
 	defer file.Close()
@@ -46,7 +46,7 @@ func Load_Blacklist(filename string) BlackList {
 	}
 
 	if err := scanner.Err(); err != nil {
-		syslog.Errf("%v", err)
+		log.Error().Err(err).Msg("")
 		panic(err)
 	}
 

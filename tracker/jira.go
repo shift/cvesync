@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/blackjack/syslog"
-	"github.com/mikkolehtisalo/cvesync/nvd"
+	"github.com/rs/zerolog/log"
+	"github.com/shift/cvesync/nvd"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -34,13 +34,13 @@ func (j *Jira) Init() {
 	// Loading Jira related settings
 	b, err := ioutil.ReadFile("/opt/cvesync/etc/jira.json")
 	if err != nil {
-		syslog.Errf("Unable to read Jira settings file: %v", err)
+		log.Error().Err(err).Msg("Unable to read Jira settings file")
 		panic(err)
 	}
 
 	err = json.Unmarshal(b, &j)
 	if err != nil {
-		syslog.Errf("Unable to unmarshal Jira settings json: %v", err)
+		log.Error().Err(err).Msg("Unable to unmarshal Jira settings file")
 		panic(err)
 	}
 
@@ -50,7 +50,7 @@ func (j *Jira) Init() {
 
 	j.Template, err = template.New("jira.templ").Funcs(funcMap).ParseFiles(j.TemplateFile)
 	if err != nil {
-		syslog.Errf("Unable to parse Jira template file: %v", err)
+		log.Error().Err(err).Msg("Unable to parse Jira template file")
 		panic(err)
 	}
 
@@ -70,7 +70,7 @@ func (j Jira) build_description(e nvd.Entry) string {
 
 	err := j.Template.Execute(&result, e)
 	if err != nil {
-		syslog.Errf("Unable to execute Jira template file: %v", err)
+		log.Error().Err(err).Msg("Unable to execute Jira template file")
 		panic(err)
 	}
 
@@ -148,7 +148,7 @@ func jira_request(reqtype string, path string, cafile string, username string, p
 		capool := x509.NewCertPool()
 		cacert, err := ioutil.ReadFile(cafile)
 		if err != nil {
-			syslog.Errf("Unable to read CA file: %v", err)
+			log.Error().Err(err).Msg("Unable to read CA file")
 			return "", err
 		}
 		capool.AppendCertsFromPEM(cacert)

@@ -1,7 +1,7 @@
 package tracker
 
 import (
-	"github.com/mikkolehtisalo/cvesync/nvd"
+	"github.com/shift/cvesync/nvd"
 )
 
 type Tracker interface {
